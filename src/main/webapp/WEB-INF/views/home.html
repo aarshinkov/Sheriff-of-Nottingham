@@ -7,101 +7,98 @@
     <title th:text="#{app.name}">The Sheriff</title>
   </head>
   <body>
-    <div layout:fragment="contentDiv">
-      <h2 th:text="#{app.name}">The Sheriff</h2>
-      <hr/>
+    <div layout:fragment="contentDiv" th:with="notUsedPlayers=${@base.getNotUsedPlayers()}">
 
-      <form id="gameForm" th:action="@{/}" method="post" th:object="${form}">
-        <div>
-          <table class="table">
-            <thead>
-              <tr>
-                <th></th>
-                <th th:text="#{total.amount}">Amount</th>
-              </tr>
-            </thead>
-            <tbody th:with="personalMoney=*{currentMoney}">
-              <tr>
-                <th th:text="#{total.currentmoney}">Current money</th>
-                <td th:if="${personalMoney ne null}" th:text="${#numbers.formatInteger(personalMoney, 1, 'WHITESPACE')}">1</td>
-                <td th:if="${personalMoney eq null}" th:text="${#numbers.formatInteger(0, 1, 'WHITESPACE')}">1</td>
-              </tr>
-              <tr>
-                <th th:text="#{total.cardmoney}">Card money</th>
-                <td class="mb-0" th:if="${cardsTotal ne null}" th:text="${#numbers.formatInteger(cardsTotal, 1, 'WHITESPACE')}">5</td>
-                <td class="mb-0" th:if="${cardsTotal eq null}">0</td>
-              </tr>
-              <tr>
-                <th class="h5 mb-0" th:text="#{total.total}">Total</th>
-                <td class="h5 mb-0" th:if="${cardsTotal ne null}" th:text="${#numbers.formatInteger(cardsTotal + personalMoney, 1, 'WHITESPACE')} + ' ' + #{gold}">5</td>
-                <td class="h5 mb-0" th:if="${cardsTotal eq null and personalMoney ne null}" th:text="${#numbers.formatInteger(personalMoney, 1, 'WHITESPACE')} + ' ' + #{gold}">0</td>
-                <td class="h5 mb-0" th:if="${cardsTotal eq null and personalMoney eq null}" th:text="${#numbers.formatInteger(0, 1, 'WHITESPACE')} + ' ' + #{gold}">0</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+      <div class="h4 mb-3">Add players</div>
 
-        <button type="submit" class="btn btn-primary" th:text="#{btn.calculate}">Calculate</button>
-        <a th:href="@{/}" class="btn btn-secondary" th:text="#{btn.clear}">Clear</a>
-        
-
-        <hr/>
-
-        <div th:text="${cards}"></div>
-
-
-        <div class="row">
-          <div class="col-12 mb-3">
-            <label class="form-label" th:text="#{currentmoney}">Current money</label>
-            <input type="number" class="form-control" th:field="*{currentMoney}"/>
+      <div class="row" th:if="${!#lists.isEmpty(notUsedPlayers)}">
+        <div class="col-12 col-lg-3 mb-3">
+          <div class="card card-hover pointer" data-bs-toggle="modal" data-bs-target="#addPlayerModal">
+            <div class="card-body d-flex align-items-center justify-content-center">
+              <div class="h1 mb-0">+</div>
+            </div>
           </div>
         </div>
+      </div>
 
-        <div class="row">
-          <div class="col-12 col-lg-3 mb-3" th:each="c, itemStat : *{cards}">
-            <div class="card h-100" th:with="hasDescription=*{cards[__${itemStat.index}__].card.description ne null}, isContraband=*{cards[__${itemStat.index}__].card.isContraband}" th:classappend="${isContraband} ? 'border border-danger' : 'border border-success'">
-              <div class="card-header text-white" th:classappend="${!isContraband} ? 'bg-success' : 'bg-danger'">
-                <div class="h5 mb-0" th:text="${c.card.name}"></div>
-              </div>
-              <div class="card-body">
+      <div class="modal modal-lg fade" id="addPlayerModal" tabindex="-1" aria-labelledby="addPlayerModalLabel" aria-hidden="true" th:if="${!#lists.isEmpty(notUsedPlayers)}">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="addPlayerModalLabel">Add player</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form th:action="@{/addPlayer}" method="post">
+              <div class="modal-body" th:with="notUsedPlayers=${@base.getNotUsedPlayers()}">
                 <div class="row">
-                  <div class="col-12 col-lg-6 mb-3">
-                    <div class="fw-bold" th:text="#{card.price}">Price</div>
+                  <div class="col-auto">
+                    <img id="characterImage" th:if="${notUsedPlayers[0].player eq 'red'}" src="../resources/img/characters/beerman.png"
+                         th:src="@{/resources/img/characters/beerman.png}" alt="Character" width="auto" height="170"/>
+                    <img id="characterImage" th:if="${notUsedPlayers[0].player eq 'blue'}" src="../resources/img/characters/baker.jpgs"
+                         th:src="@{/resources/img/characters/baker.jpg}" alt="Character" width="auto" height="170"/>
+                    <img id="characterImage" th:if="${notUsedPlayers[0].player eq 'green'}" src="../resources/img/characters/hunter.jpg"
+                         th:src="@{/resources/img/characters/hunter.jpg}" alt="Character" width="auto" height="170"/>
+                    <img id="characterImage" th:if="${notUsedPlayers[0].player eq 'yellow'}" src="../resources/img/characters/cheese_dealer.jpg"
+                         th:src="@{/resources/img/characters/cheese_dealer.jpg}" alt="Character" width="auto" height="170"/>
+                    <img id="characterImage" th:if="${notUsedPlayers[0].player eq 'purple'}" src="../resources/img/characters/madame.jpg"
+                         th:src="@{/resources/img/characters/madame.jpg}" alt="Character" width="auto" height="170"/>
                   </div>
-                  <div class="col-12 col-lg-6 mb-3">
-                    <div class="fw-bold" th:text="#{card.count}">Count</div>
-                  </div>
-                  <div class="col-12 col-lg-6 d-flex align-items-center mb-3" th:classappend="${!hasDescription} ? 'mb-lg-0'">
-                    <div th:text="${#numbers.formatInteger(c.card.price, 1, 'WHITESPACE')}">2</div>
-                  </div>
-                  <div class="col-12 col-lg-6 d-flex align-items-center mb-3" th:classappend="${!hasDescription} ? 'mb-lg-0'">
-                    <input type="number" min="0" th:field="*{cards[__${itemStat.index}__].count}" class="form-control form-control-sm"/>
-                  </div>
-                  <div class="col-12 d-flex align-items-center" th:if="${hasDescription}">
-                    <small th:text="*{cards[__${itemStat.index}__].card.description}"></small>
+                  <div class="col">
+                    <div class="mb-3">
+                      <label class="form-label fw-bold">Color</label>
+                      <select id="playerColor" name="player" class="form-control" onchange="changeCharacter(this.value);">
+                        <option th:value="${p.player}" th:text="${p.player}" th:each="p : ${notUsedPlayers}"></option>
+                        <!--                        <option value="red">Red</option>
+                                                <option value="blue">Blue</option>
+                                                <option value="green">Green</option>
+                                                <option value="yellow">Yellow</option>
+                                                <option value="purple">Purple</option>-->
+                      </select>
+                    </div>
+                    <div>
+                      <label class="form-label fw-bold">Name</label>
+                      <input type="text" class="form-control" name="name"/>
+                    </div>
                   </div>
                 </div>
               </div>
-              <div class="card-footer" th:with="currentTotal=*{cards[__${itemStat.index}__].count * cards[__${itemStat.index}__].card.price}">
-                <div class="h6 mb-0" th:text="#{total.unit(#{card.total}, ${#numbers.formatInteger(currentTotal, 1, 'WHITESPACE')}, #{gold})}"></div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Save changes</button>
               </div>
-            </div>
-
-            <input type="hidden" th:field="*{cards[__${itemStat.index}__].card.name}"/>
-            <input type="hidden" th:field="*{cards[__${itemStat.index}__].card.description}"/>
-            <input type="hidden" th:field="*{cards[__${itemStat.index}__].card.price}"/>
-            <input type="hidden" th:field="*{cards[__${itemStat.index}__].card.fine}"/>
-            <input type="hidden" th:field="*{cards[__${itemStat.index}__].card.isContraband}"/>
-            <!--<hr/>-->
+            </form>
           </div>
         </div>
-        <button type="submit" class="btn btn-primary mb-3" th:text="#{btn.calculate}">Calculate</button>
-        <a th:href="@{/}" class="btn btn-secondary mb-3" th:text="#{btn.clear}">Clear</a>
-      </form>
+      </div>
 
       <script type="text/javascript" th:inline="javascript">
-        function submitForm() {
-          document.getElementById('gameForm').submit();
+        /*<![CDATA[*/
+        var redCharacterUrl = /*[[@{/resources/img/characters/beerman.png}]]*/;
+                var blueCharacterUrl = /*[[@{/resources/img/characters/baker.jpg}]]*/;
+                var greenCharacterUrl = /*[[@{/resources/img/characters/hunter.jpg}]]*/;
+                var yellowCharacterUrl = /*[[@{/resources/img/characters/cheese_dealer.jpg}]]*/;
+                var purpleCharacterUrl = /*[[@{/resources/img/characters/madame.jpg}]]*/;
+        /*]]>*/
+
+        function changeCharacter(currentCharacter) {
+
+//          alert(currentCharacter);
+          var newCharacter = redCharacterUrl;
+
+          if (currentCharacter === "red") {
+            newCharacter = redCharacterUrl;
+          } else if (currentCharacter === "blue") {
+            newCharacter = blueCharacterUrl;
+          } else if (currentCharacter === "green") {
+            newCharacter = greenCharacterUrl;
+          } else if (currentCharacter === "yellow") {
+            newCharacter = yellowCharacterUrl;
+          } else {
+            newCharacter = purpleCharacterUrl;
+          }
+
+          document.getElementById("characterImage").src = newCharacter;
+//          alert("Change character");
         }
       </script>
     </div>
