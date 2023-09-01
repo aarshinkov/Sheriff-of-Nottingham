@@ -32,4 +32,4 @@ build/
 ### VS Code ###
 .vscode/
 
-/catalina/**
+catalina.home_IS_UNDEFINED/
