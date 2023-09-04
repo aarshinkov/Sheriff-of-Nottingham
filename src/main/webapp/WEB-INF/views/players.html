@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{templates/mainTemplate}">
+  <head>
+    <title th:text="#{app.title(#{players.title})}">Players</title>
+  </head>
+  <body>
+    <div layout:fragment="contentDiv" th:with="freeHeroes=${@base.getFreeHeroes()}, players=${@base.getPlayers()}, playersCount=${players ne null} ? ${#lists.size(players)} : 0, minPlayers=${@gameConstants.minimumPlayers}, maxPlayers=${@gameConstants.maximumPlayers}">
+
+      <div class="mb-3 d-flex align-items-center">
+        <!--<div>-->
+        <div class="h4 mb-0" th:if="${playersCount gt 0}" th:text="#{players.header.n(${playersCount})}">Players</div>
+        <div class="h4 mb-0" th:if="${playersCount eq 0}" th:text="#{players.header}">Players</div>
+        <!--</div>-->
+        <div class="ms-auto">
+          <span th:if="${(minPlayers - playersCount) eq 1}" th:text="#{players.remain.1}"></span>
+          <span th:if="${(minPlayers - playersCount) gt 1}" th:text="#{players.remain.n(${minPlayers} - ${playersCount})}"></span>
+          <span th:if="${(minPlayers - playersCount) gt 0}">&bull;</span>
+          <span th:text="#{players.minmax(${minPlayers}, ${maxPlayers})}">Min/max</span>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-12 col-lg-3 mb-3" th:if="${players ne null}" th:each="p : ${players}">
+          <!--          <div class="card h-100" th:classappend="${p.hero eq 'red'} ? 'text-bg-danger' : (${p.hero eq 'blue'} ? 'text-bg-primary' : (${p.hero eq 'green'} ? 'text-bg-success' : (${p.hero eq 'yellow'} ? 'text-bg-warning' : (${p.hero eq 'purple'} ? 'text-bg-purple'))))">
+                      <div class="row g-0">
+                        <div class="col-md-4 ps-3 d-flex justify-content-center align-items-center">
+                          <img th:if="${p.hero eq 'red'}" class="img-fluid rounded-start" src="../resources/img/characters/innkeeper.png"
+                               th:src="@{/resources/img/characters/innkeeper.png}" alt="Character" width="auto" height="190"/>
+                          <img th:if="${p.hero eq 'blue'}" class="img-fluid rounded-start" src="../resources/img/characters/baker.pngs"
+                               th:src="@{/resources/img/characters/baker.png}" alt="Character" width="auto" height="190"/>
+                          <img  th:if="${p.hero eq 'green'}" class="img-fluid rounded-start" src="../resources/img/characters/hunter.png"
+                                th:src="@{/resources/img/characters/hunter.png}" alt="Character" width="auto" height="220"/>
+                          <img th:if="${p.hero eq 'yellow'}" class="img-fluid rounded-start" src="../resources/img/characters/cheese_dealer.png"
+                               th:src="@{/resources/img/characters/cheese_dealer.png}" alt="Character" width="auto" height="190"/>
+                          <img th:if="${p.hero eq 'purple'}" class="img-fluid rounded-start" src="../resources/img/characters/madame.png"
+                               th:src="@{/resources/img/characters/madame.png}" alt="Character" width="auto" height="190"/>
+                        </div>
+                        <div class="col-md-8">
+                          <div class="card-body">
+                            <div class="card-title h5 mb-0" th:text="${p.name}">Name</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>-->
+          <div class="card h-100" th:classappend="${p.hero eq 'red'} ? 'text-bg-danger' : (${p.hero eq 'blue'} ? 'text-bg-primary' : (${p.hero eq 'green'} ? 'text-bg-success' : (${p.hero eq 'yellow'} ? 'text-bg-warning' : (${p.hero eq 'purple'} ? 'text-bg-purple'))))">
+            <div class="card-header">
+              <div class="h5 mb-0" th:text="${p.name}">Name</div>
+            </div>
+            <div class="card-body">
+              <div class="d-flex justify-content-center">
+                <img th:if="${p.hero eq 'red'}" src="../resources/img/characters/innkeeper.png"
+                     th:src="@{/resources/img/characters/innkeeper.png}" alt="Character" width="auto" height="190"/>
+                <img th:if="${p.hero eq 'blue'}" src="../resources/img/characters/baker.pngs"
+                     th:src="@{/resources/img/characters/baker.png}" alt="Character" width="auto" height="190"/>
+                <img th:if="${p.hero eq 'green'}" src="../resources/img/characters/hunter.png"
+                     th:src="@{/resources/img/characters/hunter.png}" alt="Character" width="auto" height="190"/>
+                <img th:if="${p.hero eq 'yellow'}" src="../resources/img/characters/cheese_dealer.png"
+                     th:src="@{/resources/img/characters/cheese_dealer.png}" alt="Character" width="auto" height="190"/>
+                <img th:if="${p.hero eq 'purple'}" src="../resources/img/characters/madame.png"
+                     th:src="@{/resources/img/characters/madame.png}" alt="Character" width="auto" height="190"/>
+              </div>
+              <div class="d-flex justify-content-center">
+                <!--                <div th:classappend="${p.hero eq 'red'} ? 'text-danger' : (${p.hero eq 'blue'} ? 'text-primary' : (${p.hero eq 'green'} ? 'text-success' : (${p.hero eq 'yellow'} ? 'text-warning' : (${p.hero eq 'purple'} ? 'text-danger-emphasis'))))"
+                                     th:text="#{players.type.name. + ${p.hero}} + ' (' + #{players.type. + ${p.hero}} + ')'">Hero</div>-->
+                <!--<div th:text="#{players.type.name. + ${p.hero}} + ' (' + #{players.type. + ${p.hero}} + ')'">Hero</div>-->
+                <div class="h6 mt-3 mb-2" th:text="#{players.type.name. + ${p.hero}}">Hero</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-lg-3 mb-3" th:if="${!#lists.isEmpty(freeHeroes) and playersCount lt maxPlayers}">
+          <div class="card h-100 card-hover pointer" data-bs-toggle="modal" data-bs-target="#addPlayerModal">
+            <div class="card-body d-flex align-items-center justify-content-center">
+              <div class="h1 mb-0">+</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <hr class="mb-3 mt-2"/>
+      <div class="row">
+        <div class="col-12 mb-3">
+          <a href="#" th:href="@{/game}" class="btn btn-success" th:text="#{players.startgame}"
+             th:if="${playersCount ge minPlayers and playersCount le maxPlayers}">Start game</a>
+          <a href="#" th:href="@{/game/clear}" class="btn btn-primary" th:text="#{players.clear}">Clear game</a>
+        </div>
+      </div>
+
+      <div class="modal modal-lg fade" id="addPlayerModal" tabindex="-1" aria-labelledby="addPlayerModalLabel" aria-hidden="true" th:if="${!#lists.isEmpty(freeHeroes)}">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="addPlayerModalLabel" th:text="#{players.add.modal.title}">Add player</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form th:action="@{/addPlayer}" method="post">
+              <div class="modal-body" th:with="freeHeroes=${@base.getFreeHeroes()}">
+                <div class="row">
+                  <div class="col-auto">
+                    <img id="characterImage" th:if="${freeHeroes[0].hero eq 'red'}" src="../resources/img/characters/innkeeper.png"
+                         th:src="@{/resources/img/characters/innkeeper.png}" alt="Character" width="auto" height="170"/>
+                    <img id="characterImage" th:if="${freeHeroes[0].hero eq 'blue'}" src="../resources/img/characters/baker.pngs"
+                         th:src="@{/resources/img/characters/baker.png}" alt="Character" width="auto" height="170"/>
+                    <img id="characterImage" th:if="${freeHeroes[0].hero eq 'green'}" src="../resources/img/characters/hunter.png"
+                         th:src="@{/resources/img/characters/hunter.png}" alt="Character" width="auto" height="170"/>
+                    <img id="characterImage" th:if="${freeHeroes[0].hero eq 'yellow'}" src="../resources/img/characters/cheese_dealer.png"
+                         th:src="@{/resources/img/characters/cheese_dealer.png}" alt="Character" width="auto" height="170"/>
+                    <img id="characterImage" th:if="${freeHeroes[0].hero eq 'purple'}" src="../resources/img/characters/madame.png"
+                         th:src="@{/resources/img/characters/madame.png}" alt="Character" width="auto" height="170"/>
+                  </div>
+                  <div class="col">
+                    <div class="mb-3">
+                      <label class="form-label fw-bold" th:text="#{players.add.modal.name}">Name</label>
+                      <input type="text" class="form-control" name="name"/>
+                    </div>
+                    <div>
+                      <label class="form-label fw-bold" th:text="#{players.add.modal.color}">Color</label>
+                      <select id="playerColor" name="hero" class="form-control" onchange="changeCharacter(this.value);">
+                        <option th:value="${p.hero}" th:text="#{players.type. + ${p.hero}}" th:each="p : ${freeHeroes}"></option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{btn.cancel}">Cancel</button>
+                <button type="submit" class="btn btn-primary" th:text="#{btn.save}">Save</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <script type="text/javascript" th:inline="javascript">
+        /*<![CDATA[*/
+        var redCharacterUrl = /*[[@{/resources/img/characters/innkeeper.png}]]*/;
+                var blueCharacterUrl = /*[[@{/resources/img/characters/baker.png}]]*/;
+                var greenCharacterUrl = /*[[@{/resources/img/characters/hunter.png}]]*/;
+                var yellowCharacterUrl = /*[[@{/resources/img/characters/cheese_dealer.png}]]*/;
+                var purpleCharacterUrl = /*[[@{/resources/img/characters/madame.png}]]*/;
+        /*]]>*/
+
+        function changeCharacter(currentCharacter) {
+
+//          alert(currentCharacter);
+          var newCharacter = redCharacterUrl;
+
+          if (currentCharacter === "red") {
+            newCharacter = redCharacterUrl;
+          } else if (currentCharacter === "blue") {
+            newCharacter = blueCharacterUrl;
+          } else if (currentCharacter === "green") {
+            newCharacter = greenCharacterUrl;
+          } else if (currentCharacter === "yellow") {
+            newCharacter = yellowCharacterUrl;
+          } else {
+            newCharacter = purpleCharacterUrl;
+          }
+
+          document.getElementById("characterImage").src = newCharacter;
+//          alert("Change character");
+        }
+      </script>
+    </div>
+  </body>
+</html>

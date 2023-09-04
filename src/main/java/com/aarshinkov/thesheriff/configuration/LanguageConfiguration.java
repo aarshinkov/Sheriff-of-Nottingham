@@ -16,6 +16,7 @@ public class LanguageConfiguration implements WebMvcConfigurer {
 
   @Bean(name = "localeResolver")
   public CookieLocaleResolver cookieLocaleResolver() {
+    
     CookieLocaleResolver localeResolver = new CookieLocaleResolver();
     localeResolver.setCookieName(AppConstants.LANG_COOKIE_NAME);
     localeResolver.setDefaultLocale(new Locale(AppConstants.LANG_DEFAULT));
@@ -25,6 +26,7 @@ public class LanguageConfiguration implements WebMvcConfigurer {
 
   @Bean(name = "localeInterceptor")
   public LocaleChangeInterceptor localeInterceptor() {
+    
     LocaleChangeInterceptor interceptor = new LocaleChangeInterceptor();
     interceptor.setParamName(AppConstants.LANG_COOKIE_NAME);
 
@@ -33,6 +35,7 @@ public class LanguageConfiguration implements WebMvcConfigurer {
 
   @Override
   public void addInterceptors(InterceptorRegistry registry) {
+    
     registry.addInterceptor(localeInterceptor());
   }
 }

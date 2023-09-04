@@ -2,6 +2,7 @@ package com.aarshinkov.thesheriff.controllers;
 
 import com.aarshinkov.thesheriff.base.*;
 import com.aarshinkov.thesheriff.domain.*;
+import com.aarshinkov.thesheriff.memory.Memory;
 import com.aarshinkov.thesheriff.services.*;
 import java.util.*;
 import lombok.*;
@@ -10,29 +11,24 @@ import org.springframework.stereotype.*;
 import org.springframework.ui.*;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ *
+ * @author Atanas Yordanov Arshinkov
+ * @since 1.0.0
+ */
 @Controller
 @RequiredArgsConstructor
-public class GameController extends Base
-{
+public class GameController extends Base {
+
   private final Logger log = LoggerFactory.getLogger(getClass());
 
   private final CalculatorService calculatorService;
 
-  @PostMapping(value = "/addPlayer")
-  public String addPlayer(@RequestParam("player") String player, @RequestParam("name") String name)
-  {
-    log.debug("Available players: " + getNotUsedPlayers());
-    boolean isPlayerMarkedAsUsed = markPlayerAsUsed(player);
-    log.debug("Is player marked as used? " + isPlayerMarkedAsUsed);
-    log.debug("name: " + name);
-    log.debug("player: " + player);
-    
-    return "redirect:/";
-  }
+  private final Memory memory;
 
   @GetMapping(value = "/game")
-  public String home(Model model)
-  {
+  public String home(Model model) {
+
     List<CardContainer> cards = initCards();
     CardForm form = new CardForm();
     form.setCards(cards);
@@ -43,10 +39,9 @@ public class GameController extends Base
   }
 
   @PostMapping(value = "/game")
-  public String calculateTotal(CardForm form, Model model)
-  {
-    if (form.getCurrentMoney() == null || form.getCurrentMoney() <= 0)
-    {
+  public String calculateTotal(CardForm form, Model model) {
+
+    if (form.getCurrentMoney() == null || form.getCurrentMoney() <= 0) {
       form.setCurrentMoney(0);
     }
 
@@ -57,8 +52,15 @@ public class GameController extends Base
     return "game";
   }
 
-  private List<CardContainer> initCards()
-  {
+  @GetMapping(value = "/game/clear")
+  public String clearGame() {
+
+    memory.clearMemory();
+
+    return "redirect:/players";
+  }
+
+  private List<CardContainer> initCards() {
 
     List<CardContainer> cards = new ArrayList<>();
 

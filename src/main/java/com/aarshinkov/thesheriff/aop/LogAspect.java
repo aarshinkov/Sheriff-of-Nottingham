@@ -17,15 +17,13 @@ import java.math.BigDecimal;
  */
 @Aspect
 @Component
-public class LogAspect
-{
+public class LogAspect {
 
   private final Logger log = LoggerFactory.getLogger(getClass());
 
   @Before("execution(* com.aarshinkov.thesheriff.controllers.*.*(..))"
           + " || execution(* com.aarshinkov.thesheriff.services.*.*(..))")
-  public void methodBegin(JoinPoint joinPoint)
-  {
+  public void methodBegin(JoinPoint joinPoint) {
 
     final String CLASS_NAME = joinPoint.getTarget().getClass().getSimpleName();
     final String METHOD_NAME = joinPoint.getSignature().getName();
@@ -38,8 +36,8 @@ public class LogAspect
 
   @Around("execution(* com.aarshinkov.thesheriff.controllers.*.*(..))"
           + " || execution(* com.aarshinkov.thesheriff.services.*.*(..))")
-  public Object logExecTime(ProceedingJoinPoint pjp) throws Throwable
-  {
+  public Object logExecTime(ProceedingJoinPoint pjp) throws Throwable {
+    
     final String CLASS_NAME = pjp.getTarget().getClass().getSimpleName();
     final String METHOD_NAME = pjp.getSignature().getName();
 
@@ -52,12 +50,9 @@ public class LogAspect
     builder.append(CLASS_NAME).append(" -> ").append(METHOD_NAME).append("() ended in ");
 //    result += className + " -> " + methodName + "() ended in ";
 
-    if (elapsedTimeMillis.doubleValue() < 1000)
-    {
+    if (elapsedTimeMillis.doubleValue() < 1000) {
       builder.append(elapsedTimeMillis).append(" millis.");
-    }
-    else
-    {
+    } else {
       builder.append(elapsedTimeMillis.divide(new BigDecimal(1000))).append(" seconds.");
     }
 

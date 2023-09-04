@@ -1,7 +1,18 @@
+/*body {
+  background-image: url("../img/bg.jpg");
+  background-color: #cccccc;
+}*/
+
 .pointer {
   cursor: pointer;
 }
 
 .card-hover:hover {
   background: rgba(0,0,0,0.1);
+}
+
+.text-bg-purple {
+  color: #A364C6 !important;
+  background-color: #A364C6 !important;
+  color: #fff !important;
 }
