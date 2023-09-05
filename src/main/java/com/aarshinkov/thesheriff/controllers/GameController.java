@@ -3,6 +3,7 @@ package com.aarshinkov.thesheriff.controllers;
 import com.aarshinkov.thesheriff.base.*;
 import com.aarshinkov.thesheriff.domain.*;
 import com.aarshinkov.thesheriff.memory.Memory;
+import com.aarshinkov.thesheriff.memory.objects.Player;
 import com.aarshinkov.thesheriff.services.*;
 import java.util.*;
 import lombok.*;
@@ -29,11 +30,15 @@ public class GameController extends Base {
   @GetMapping(value = "/game")
   public String home(Model model) {
 
-    List<CardContainer> cards = initCards();
-    CardForm form = new CardForm();
-    form.setCards(cards);
+//    List<CardContainer> cards = initCards();
+//    CardForm form = new CardForm();
+//    form.setCards(cards);
+//
+//    model.addAttribute("form", form);
+    model.addAttribute("baseContrabandCards", getBaseContrabandCards());
 
-    model.addAttribute("form", form);
+    List<Player> players = getPlayers();
+    model.addAttribute("players", players);
 
     return "game";
   }
@@ -58,6 +63,19 @@ public class GameController extends Base {
     memory.clearMemory();
 
     return "redirect:/players";
+  }
+
+  private List<CardContainer> getBaseContrabandCards() {
+
+    List<CardContainer> cards = new ArrayList<>();
+
+    // Contraband
+    cards.add(new CardContainer(0, new Card("Пипер", null, 6, 4, true, false)));
+    cards.add(new CardContainer(0, new Card("Арбалет", null, 9, 4, true, false)));
+    cards.add(new CardContainer(0, new Card("Коприна", null, 8, 4, true, false)));
+    cards.add(new CardContainer(0, new Card("Медовина", null, 7, 4, true, false)));
+
+    return cards;
   }
 
   private List<CardContainer> initCards() {

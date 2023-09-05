@@ -7,102 +7,91 @@
     <title th:text="#{app.title(#{game.title})}">The Sheriff</title>
   </head>
   <body>
-
     <div layout:fragment="contentDiv">
+      <ul class="nav nav-tabs mb-3" id="myTab" role="tablist">
+        <li class="nav-item" th:each="p, iterStat : ${players}">
+          <button type="button" class="nav-link" role="tab" th:classappend="${iterStat.isFirst} ? 'active'" th:id="'#player-' + ${iterStat.index} + '-tab'" data-bs-toggle="tab"
+                  th:data-bs-target="'#player-' + ${iterStat.index}" th:aria-controls="'#player-' + ${iterStat.index}" th:attr="aria-selected=${iterStat.isFirst}" th:text="${p.name}">Player</button>
+        </li>
+        <li class="nav-item">
+          <button type="button" class="nav-link" role="tab" id="result-tab" data-bs-toggle="tab"
+                  data-bs-target="#result" aria-controls="result" aria-selected="false">Result</button>
+        </li>
+      </ul>
+      <div class="tab-content" id="gameContent">
+        <div class="tab-pane fade" th:each="p, iterStat : ${players}" th:classappend="${iterStat.isFirst} ? 'show active'"
+             th:id="'player-' + ${iterStat.index}" tabindex="0">
+          <div class="row">
+            <div class="col-12 mb-3">
+              <div class="h4 mb-4" th:text="${p.name}">Atanas</div>
 
-      <form id="gameForm" th:action="@{/game}" method="post" th:object="${form}">
-        <div>
-          <table class="table">
-            <thead>
-              <tr>
-                <th></th>
-                <th th:text="#{total.amount}">Amount</th>
-              </tr>
-            </thead>
-            <tbody th:with="personalMoney=*{currentMoney}">
-              <tr>
-                <th th:text="#{total.currentmoney}">Current money</th>
-                <td th:if="${personalMoney ne null}" th:text="${#numbers.formatInteger(personalMoney, 1, 'WHITESPACE')}">1</td>
-                <td th:if="${personalMoney eq null}" th:text="${#numbers.formatInteger(0, 1, 'WHITESPACE')}">1</td>
-              </tr>
-              <tr>
-                <th th:text="#{total.cardmoney}">Card money</th>
-                <td class="mb-0" th:if="${cardsTotal ne null}" th:text="${#numbers.formatInteger(cardsTotal, 1, 'WHITESPACE')}">5</td>
-                <td class="mb-0" th:if="${cardsTotal eq null}">0</td>
-              </tr>
-              <tr>
-                <th class="h5 mb-0" th:text="#{total.total}">Total</th>
-                <td class="h5 mb-0" th:if="${cardsTotal ne null}" th:text="${#numbers.formatInteger(cardsTotal + personalMoney, 1, 'WHITESPACE')} + ' ' + #{gold}">5</td>
-                <td class="h5 mb-0" th:if="${cardsTotal eq null and personalMoney ne null}" th:text="${#numbers.formatInteger(personalMoney, 1, 'WHITESPACE')} + ' ' + #{gold}">0</td>
-                <td class="h5 mb-0" th:if="${cardsTotal eq null and personalMoney eq null}" th:text="${#numbers.formatInteger(0, 1, 'WHITESPACE')} + ' ' + #{gold}">0</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <button type="submit" class="btn btn-primary" th:text="#{btn.calculate}">Calculate</button>
-        <a th:href="@{/game}" class="btn btn-secondary" th:text="#{btn.clear}">Clear</a>
-
-
-        <hr/>
-
-        <div th:text="${cards}"></div>
-
-
-        <div class="row">
-          <div class="col-12 mb-3">
-            <label class="form-label" th:text="#{currentmoney}">Current money</label>
-            <input type="number" class="form-control" th:field="*{currentMoney}"/>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-12 col-lg-3 mb-3" th:each="c, itemStat : *{cards}">
-            <div class="card h-100" th:with="hasDescription=*{cards[__${itemStat.index}__].card.description ne null}, isContraband=*{cards[__${itemStat.index}__].card.isContraband}" th:classappend="${isContraband} ? 'border border-danger' : 'border border-success'">
-              <div class="card-header text-white" th:classappend="${!isContraband} ? 'bg-success' : 'bg-danger'">
-                <div class="h5 mb-0" th:text="${c.card.name}"></div>
-              </div>
-              <div class="card-body">
-                <div class="row">
-                  <div class="col-12 col-lg-6 mb-3">
-                    <div class="fw-bold" th:text="#{card.price}">Price</div>
+              <div class="row">
+                <div class="col-12 col-lg-6">
+                  <!--<div class="border border-danger">-->
+                  <div class="row">
+                    <div class="col-4">
+                      <div class="h-100">
+                        <div class="card text-bg-success mb-3">
+                          <div>Apples</div>
+                          <img src="#" class="card-img-top" alt="Apples card"/>
+                          <div class="card-footer">
+                            <input type="number" class="form-control form-control-sm" min="0"/>
+                          </div>
+                        </div>
+                        <div class="card text-bg-success">
+                          <div>Bread</div>
+                          <img src="#" class="card-img-top" alt="Bread card"/>
+                          <div class="card-footer">
+                            <input type="number" class="form-control form-control-sm" min="0"/>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-4">
+                      <div class="card h-100">
+                        <div class="card-body">
+                          <div>Hello</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-4">
+                      <div class="h-100">
+                        <div class="card text-bg-success mb-3">
+                          <div>Cheese</div>
+                          <img src="#" class="card-img-top" alt="Cheese card"/>
+                          <div class="card-footer">
+                            <input type="number" class="form-control form-control-sm" min="0"/>
+                          </div>
+                        </div>
+                        <div class="card text-bg-success">
+                          <div>Chicken</div>
+                          <img src="#" class="card-img-top" alt="Chicken card"/>
+                          <div class="card-footer">
+                            <input type="number" class="form-control form-control-sm" min="0"/>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div class="col-12 col-lg-6 mb-3">
-                    <div class="fw-bold" th:text="#{card.count}">Count</div>
+                  <!--</div>-->
+                </div>
+                <div class="col-12 col-lg-6">
+                  <!--<div class="border border-danger">-->
+                  <div class="row">
+                    <div class="col mb-3" th:each="bcc : ${baseContrabandCards}">
+                      <div th:text="${bcc.card.name}"></div>
+                    </div>
                   </div>
-                  <div class="col-12 col-lg-6 d-flex align-items-center mb-3" th:classappend="${!hasDescription} ? 'mb-lg-0'">
-                    <div th:text="${#numbers.formatInteger(c.card.price, 1, 'WHITESPACE')}">2</div>
-                  </div>
-                  <div class="col-12 col-lg-6 d-flex align-items-center mb-3" th:classappend="${!hasDescription} ? 'mb-lg-0'">
-                    <input type="number" min="0" th:field="*{cards[__${itemStat.index}__].count}" class="form-control form-control-sm"/>
-                  </div>
-                  <div class="col-12 d-flex align-items-center" th:if="${hasDescription}">
-                    <small th:text="*{cards[__${itemStat.index}__].card.description}"></small>
-                  </div>
+                  <!--</div>-->
                 </div>
               </div>
-              <div class="card-footer" th:with="currentTotal=*{cards[__${itemStat.index}__].count * cards[__${itemStat.index}__].card.price}">
-                <div class="h6 mb-0" th:text="#{total.unit(#{card.total}, ${#numbers.formatInteger(currentTotal, 1, 'WHITESPACE')}, #{gold})}"></div>
-              </div>
             </div>
-
-            <input type="hidden" th:field="*{cards[__${itemStat.index}__].card.name}"/>
-            <input type="hidden" th:field="*{cards[__${itemStat.index}__].card.description}"/>
-            <input type="hidden" th:field="*{cards[__${itemStat.index}__].card.price}"/>
-            <input type="hidden" th:field="*{cards[__${itemStat.index}__].card.fine}"/>
-            <input type="hidden" th:field="*{cards[__${itemStat.index}__].card.isContraband}"/>
-            <!--<hr/>-->
           </div>
         </div>
-        <button type="submit" class="btn btn-primary mb-3" th:text="#{btn.calculate}">Calculate</button>
-        <a th:href="@{/game}" class="btn btn-secondary mb-3" th:text="#{btn.clear}">Clear</a>
-      </form>
-
-      <script type="text/javascript" th:inline="javascript">
-        function submitForm() {
-          document.getElementById('gameForm').submit();
-        }
-      </script>
+        <div class="tab-pane fade" id="result" tabindex="0">
+          <div>Result</div>
+        </div>
+      </div>
     </div>
   </body>
 </html>
