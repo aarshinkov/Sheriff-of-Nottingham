@@ -1,7 +1,10 @@
 package com.aarshinkov.thesheriff.services;
 
-import com.aarshinkov.thesheriff.domain.*;
-import java.util.*;
+import com.aarshinkov.thesheriff.domain.CardContainer;
+import com.aarshinkov.thesheriff.domain.game.*;
+import com.aarshinkov.thesheriff.domain.game.total.KingsAndQueens;
+import com.aarshinkov.thesheriff.domain.game.total.LegalCardType;
+import java.util.List;
 
 /**
  *
@@ -10,5 +13,7 @@ import java.util.*;
  */
 public interface CalculatorService {
 
-  Integer calculateStockMoney(List<CardContainer> cards);
+  TotalResult calculateTotalResult( List<PlayerResult> playersResult);
+  
+  KingsAndQueens calculateCardsKingsAndQueens(LegalCardType legalCardType, List<CardContainer>... playersCards);
 }

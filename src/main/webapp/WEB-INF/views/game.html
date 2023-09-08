@@ -100,90 +100,9 @@
                       </div>
                     </div>
                   </div>
-
-                  <!--<div class="row">-->
-                  <!--                  <div class="col-12 col-lg-5 mb-3">
-                                      <div class="border border-danger">
-                                      <div class="row">
-                                        <div class="col-4">
-                                          <div class="h-100">
-                                            <div class="card text-bg-success mb-3">
-                                              <div>Apples</div>
-                                              <img src="#" th:src="@{/resources/img/cards/apples.JPG}" class="card-img-top" alt="Apples card"/>
-                                              <div class="card-footer">
-                                                <input type="number" class="form-control form-control-sm" min="0"/>
-                                              </div>
-                                            </div>
-                                            <div class="card text-bg-success">
-                                              <div>Bread</div>
-                                              <img src="#" th:src="@{/resources/img/cards/bread.JPG}" class="card-img-top" alt="Bread card"/>
-                                              <div class="card-footer">
-                                                <input type="number" class="form-control form-control-sm" min="0"/>
-                                              </div>
-                                            </div>
-                                          </div>
-                                        </div>
-                                        <div class="col-4">
-                                          <div class="card" th:classappend="${p.player.hero eq 'red'} ? 'text-bg-danger' : (${p.player.hero eq 'blue'} ? 'game-player-blue' : (${p.player.hero eq 'green'} ? 'game-player-green' : (${p.player.hero eq 'yellow'} ? 'game-player-yellow' : (${p.player.hero eq 'purple'} ? 'game-player-purple'))))">
-                                            <div class="card-header">
-                                              <div class="h5 mb-0" th:text="${p.player.name}">Name</div>
-                                            </div>
-                                            <div class="card-body">
-                                              <div class="d-flex justify-content-center">
-                                                <img th:if="${p.player.hero eq 'red'}" src="../resources/img/characters/innkeeper.png"
-                                                     th:src="@{/resources/img/characters/innkeeper.png}" alt="Character" width="auto" height="190"/>
-                                                <img th:if="${p.player.hero eq 'blue'}" src="../resources/img/characters/baker.pngs"
-                                                     th:src="@{/resources/img/characters/baker.png}" alt="Character" width="auto" height="190"/>
-                                                <img th:if="${p.player.hero eq 'green'}" src="../resources/img/characters/hunter.png"
-                                                     th:src="@{/resources/img/characters/hunter.png}" alt="Character" width="auto" height="190"/>
-                                                <img th:if="${p.player.hero eq 'yellow'}" src="../resources/img/characters/cheese_dealer.png"
-                                                     th:src="@{/resources/img/characters/cheese_dealer.png}" alt="Character" width="auto" height="190"/>
-                                                <img th:if="${p.player.hero eq 'purple'}" src="../resources/img/characters/madame.png"
-                                                     th:src="@{/resources/img/characters/madame.png}" alt="Character" width="auto" height="190"/>
-                                              </div>
-                                              <div class="d-flex justify-content-center">
-                                                                <div th:classappend="${p.player.hero eq 'red'} ? 'text-danger' : (${p.player.hero eq 'blue'} ? 'text-primary' : (${p.player.hero eq 'green'} ? 'text-success' : (${p.player.hero eq 'yellow'} ? 'text-warning' : (${p.player.hero eq 'purple'} ? 'text-danger-emphasis'))))"
-                                                                     th:text="#{players.type.name. + ${p.player.hero}} + ' (' + #{players.type. + ${p.player.hero}} + ')'">Hero</div>
-                                                <div th:text="#{players.type.name. + ${p.player.hero}} + ' (' + #{players.type. + ${p.player.hero}} + ')'">Hero</div>
-                                                <div class="h6 mt-3 mb-2" th:text="#{players.type.name. + ${p.player.hero}}">Hero</div>
-                                              </div>
-                                            </div>
-                                          </div>
-                                        </div>
-                                        <div class="col-4">
-                                          <div class="h-100">
-                                            <div class="card text-bg-success mb-3">
-                                              <div>Cheese</div>
-                                              <img src="#" th:src="@{/resources/img/cards/cheese.JPG}" class="card-img-top" alt="Cheese card"/>
-                                              <div class="card-footer">
-                                                <input type="number" class="form-control form-control-sm" min="0"/>
-                                              </div>
-                                            </div>
-                                            <div class="card text-bg-success">
-                                              <div>Chicken</div>
-                                              <img src="#" th:src="@{/resources/img/cards/chicken.JPG}" class="card-img-top" alt="Chicken card"/>
-                                              <div class="card-footer">
-                                                <input type="number" class="form-control form-control-sm" min="0"/>
-                                              </div>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                      </div>
-                                    </div>-->
-                  <!--</div>-->
                   <hr class="mt-2 mb-3"/>
                   <div class="row">
                     <div class="col-12 col-lg mb-3" th:each="gcc, gccIndex : *{playersResult[__${playersResultIndex.index}__].goldContrabandCards}">
-                      <!--                    <div class="card text-bg-danger h-100">
-                                            <div class="card-body">
-                                              <div th:text="${gcc.card.name}">Gold contraband card</div>
-                                            </div>
-                                            <div class="card-footer game-gold-yellow">
-                                              <input type="number" class="form-control form-control-sm" min="0"/>
-                                            </div>
-                                          </div>-->
-                      <!--                    <div th:text="*{playersResult[__${playersResultIndex.index}__].goldContrabandCards[__${gccStat.index}__]}"></div>-->
                       <div class="card game-player-red h-100">
                         <img src="#" th:src="@{/resources/img} + ${gcc.card.image}" class="card-img-top" th:alt="${gcc.card.name}" alt="Card"/>
                         <div class="card-footer">
@@ -231,17 +150,6 @@
                       <input type="hidden" th:field="*{playersResult[__${playersResultIndex.index}__].kingContrabandCards[__${kccIndex.index}__].card.hasEffect}"/>
 
                       <!-- End of Hidden fields -->
-                      <!--                    <div class="card text-bg-danger h-100">
-                                            <div class="card-body">
-                                              <div th:text="${kcc.card.name}">King contraband card</div>
-                                              <div>
-                                                <small th:text="${kcc.card.description}"></small>
-                                              </div>
-                                            </div>
-                                            <div class="card-footer game-king-blue">
-                                              <input type="number" class="form-control form-control-sm" min="0"/>
-                                            </div>
-                                          </div>-->
                     </div>
                   </div>
                 </div>
@@ -261,17 +169,31 @@
                 </tr>
               </thead>
               <tbody>
-                <tr th:each="p, playersResultIndex : *{playersResult}">
+<!--                <tr th:each="p, playersResultIndex : *{playersResult}">
                   <td th:text="${p.player.name}">Name</td>
                   <td th:classappend="${p.player.hero eq 'red'} ? 'game-text-red' : (${p.player.hero eq 'blue'} ? 'game-text-blue' : (${p.player.hero eq 'green'} ? 'game-text-green' : (${p.player.hero eq 'yellow'} ? 'game-text-yellow' : (${p.player.hero eq 'purple'} ? 'game-text-purple'))))" th:text="#{players.type.name. + ${p.player.hero}} + ' (' + #{players.type. + ${p.player.hero}} + ')'">Hero</td>
                   <td th:text="${p.currentMoney}">3</td>
                   <td>5</td>
                   <td>8</td>
+                </tr>-->
+<!--<div th:text="${playersTotal}"></div>-->
+                <tr th:each="pt : ${totalResult.playersTotal}">
+                  <td th:text="${pt.player.name}">Player name</td>
+                  <td th:classappend="${pt.player.hero eq 'red'} ? 'game-text-red' : (${pt.player.hero eq 'blue'} ? 'game-text-blue' : (${pt.player.hero eq 'green'} ? 'game-text-green' : (${pt.player.hero eq 'yellow'} ? 'game-text-yellow' : (${pt.player.hero eq 'purple'} ? 'game-text-purple'))))" th:text="#{players.type.name. + ${pt.player.hero}} + ' (' + #{players.type. + ${pt.player.hero}} + ')'">Hero</td>
+                  <td th:text="${pt.cashMoney}">Cash money</td>
+                  <td th:text="${pt.cardMoney}">Card money</td>
+                  <!--<td>4</td>-->
+                  <td th:text="${pt.total}">Total</td>
+<!--                  <td th:text="${p.player.name}">Name</td>
+                  <td th:classappend="${p.player.hero eq 'red'} ? 'game-text-red' : (${p.player.hero eq 'blue'} ? 'game-text-blue' : (${p.player.hero eq 'green'} ? 'game-text-green' : (${p.player.hero eq 'yellow'} ? 'game-text-yellow' : (${p.player.hero eq 'purple'} ? 'game-text-purple'))))" th:text="#{players.type.name. + ${p.player.hero}} + ' (' + #{players.type. + ${p.player.hero}} + ')'">Hero</td>
+                  <td th:text="${p.currentMoney}">3</td>
+                  <td>5</td>
+                  <td>8</td>-->
                 </tr>
               </tbody>
             </table>
 
-            <div class="h3 mb-0">Winner: <span>Player</span> with <span>0</span> coins</div>
+            <div class="h3 mb-0" th:each="winner : ${totalResult.winners}">Winner: <span>Player</span> with <span>0</span> coins</div>
           </div>
         </div>
       </form>

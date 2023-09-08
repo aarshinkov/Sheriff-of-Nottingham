@@ -65,7 +65,8 @@ public class GameController extends Base {
     log.debug(form.toString());
     model.addAttribute("form", form);
     
-//    model.addAttribute("cardsTotal", calculatorService.calculateStockMoney(form.getCards()));
+    model.addAttribute("totalResult", calculatorService.calculateTotalResult(form.getPlayersResult()));
+    
     return "game";
   }
 
