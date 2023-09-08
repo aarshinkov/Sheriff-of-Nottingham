@@ -8,90 +8,273 @@
   </head>
   <body>
     <div layout:fragment="contentDiv">
-      <ul class="nav nav-tabs mb-3" id="myTab" role="tablist">
-        <li class="nav-item" th:each="p, iterStat : ${players}">
-          <button type="button" class="nav-link" role="tab" th:classappend="${iterStat.isFirst} ? 'active'" th:id="'#player-' + ${iterStat.index} + '-tab'" data-bs-toggle="tab"
-                  th:data-bs-target="'#player-' + ${iterStat.index}" th:aria-controls="'#player-' + ${iterStat.index}" th:attr="aria-selected=${iterStat.isFirst}" th:text="${p.name}">Player</button>
-        </li>
-        <li class="nav-item">
-          <button type="button" class="nav-link" role="tab" id="result-tab" data-bs-toggle="tab"
-                  data-bs-target="#result" aria-controls="result" aria-selected="false">Result</button>
-        </li>
-      </ul>
-      <div class="tab-content" id="gameContent">
-        <div class="tab-pane fade" th:each="p, iterStat : ${players}" th:classappend="${iterStat.isFirst} ? 'show active'"
-             th:id="'player-' + ${iterStat.index}" tabindex="0">
-          <div class="row">
-            <div class="col-12 mb-3">
-              <div class="h4 mb-4" th:text="${p.name}">Atanas</div>
 
-              <div class="row">
-                <div class="col-12 col-lg-6">
-                  <!--<div class="border border-danger">-->
-                  <div class="row">
-                    <div class="col-4">
-                      <div class="h-100">
-                        <div class="card text-bg-success mb-3">
-                          <div>Apples</div>
-                          <img src="#" class="card-img-top" alt="Apples card"/>
-                          <div class="card-footer">
-                            <input type="number" class="form-control form-control-sm" min="0"/>
-                          </div>
-                        </div>
-                        <div class="card text-bg-success">
-                          <div>Bread</div>
-                          <img src="#" class="card-img-top" alt="Bread card"/>
-                          <div class="card-footer">
-                            <input type="number" class="form-control form-control-sm" min="0"/>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-4">
-                      <div class="card h-100">
-                        <div class="card-body">
-                          <div>Hello</div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-4">
-                      <div class="h-100">
-                        <div class="card text-bg-success mb-3">
-                          <div>Cheese</div>
-                          <img src="#" class="card-img-top" alt="Cheese card"/>
-                          <div class="card-footer">
-                            <input type="number" class="form-control form-control-sm" min="0"/>
-                          </div>
-                        </div>
-                        <div class="card text-bg-success">
-                          <div>Chicken</div>
-                          <img src="#" class="card-img-top" alt="Chicken card"/>
-                          <div class="card-footer">
-                            <input type="number" class="form-control form-control-sm" min="0"/>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <!--</div>-->
+      <form id="gameForm" th:action="@{/game}" method="post" th:object="${form}">
+
+        <div class="row">
+          <div class="col-12 mb-3">
+            <button type="submit" class="btn btn-primary">Calculate</button>
+          </div>
+        </div>
+
+        <ul class="nav nav-tabs mb-3" id="myTab" role="tablist">
+          <li class="nav-item" th:each="p, playersResultIndex : *{playersResult}">
+            <button type="button" class="nav-link" role="tab" th:classappend="(${playersResultIndex.isFirst} ? 'active') + ' ' + (${p.player.hero eq 'red'} ? 'game-text-red' : (${p.player.hero eq 'blue'} ? 'game-text-blue' : (${p.player.hero eq 'green'} ? 'game-text-green' : (${p.player.hero eq 'yellow'} ? 'game-text-yellow' : (${p.player.hero eq 'purple'} ? 'game-text-purple')))))" th:id="'#player-' + ${playersResultIndex.index} + '-tab'" data-bs-toggle="tab"
+                    th:data-bs-target="'#player-' + ${playersResultIndex.index}" th:aria-controls="'#player-' + ${playersResultIndex.index}" th:attr="aria-selected=${playersResultIndex.isFirst}" th:text="${p.player.name}">Player</button>
+          </li>
+          <li class="nav-item">
+            <button type="button" class="nav-link" role="tab" id="result-tab" data-bs-toggle="tab"
+                    data-bs-target="#result" aria-controls="result" aria-selected="false">Result</button>
+          </li>
+        </ul>
+        <!--<div th:text="*{playersResult}"></div>-->
+        <div class="tab-content" id="gameContent">
+          <div class="tab-pane fade" th:each="p, playersResultIndex : *{playersResult}" th:classappend="${playersResultIndex.isFirst} ? 'show active'"
+               th:id="'player-' + ${playersResultIndex.index}" tabindex="0">
+
+            <!-- Hidden fields -->
+
+            <input type="hidden" th:field="*{playersResult[__${playersResultIndex.index}__].player.name}"/>
+            <input type="hidden" th:field="*{playersResult[__${playersResultIndex.index}__].player.hero}"/>
+
+            <!-- End of Hidden fields -->
+
+            <div class="row">
+              <div class="col-12 mb-3">
+                <div class="h4 mb-2" th:text="${p.player.name}"
+                     th:classappend="${p.player.hero eq 'red'} ? 'game-text-red' : (${p.player.hero eq 'blue'} ? 'game-text-blue' : (${p.player.hero eq 'green'} ? 'game-text-green' : (${p.player.hero eq 'yellow'} ? 'game-text-yellow' : (${p.player.hero eq 'purple'} ? 'game-text-purple'))))">Name</div>
+
+                <div class="mb-3">
+                  <label class="form-label" th:text="#{currentmoney}">Current money</label>
+                  <input type="number" class="form-control" th:field="*{playersResult[__${playersResultIndex.index}__].currentMoney}" min="0"/>
                 </div>
-                <div class="col-12 col-lg-6">
-                  <!--<div class="border border-danger">-->
-                  <div class="row">
-                    <div class="col mb-3" th:each="bcc : ${baseContrabandCards}">
-                      <div th:text="${bcc.card.name}"></div>
+
+                <div class="row">
+                  <div class="col-12 col-lg-6">
+                    <div class="row">
+                      <div class="col-12 col-lg-3" th:each="lc, lcIndex : *{playersResult[__${playersResultIndex.index}__].legalCards}">
+                        <div class="card game-player-green mb-3">
+                          <img src="#" th:src="@{/resources/img} + ${lc.card.image}" class="card-img-top" th:alt="${lc.card.name}" alt="Card"/>
+                          <div class="card-footer">
+                            <input type="number" class="form-control form-control-sm" th:field="*{playersResult[__${playersResultIndex.index}__].legalCards[__${lcIndex.index}__].count}" min="0"/>
+                          </div>
+                        </div>
+
+                        <!-- Hidden fields -->
+
+                        <input type="hidden" th:field="*{playersResult[__${playersResultIndex.index}__].legalCards[__${lcIndex.index}__].card.name}"/>
+                        <input type="hidden" th:field="*{playersResult[__${playersResultIndex.index}__].legalCards[__${lcIndex.index}__].card.description}"/>
+                        <input type="hidden" th:field="*{playersResult[__${playersResultIndex.index}__].legalCards[__${lcIndex.index}__].card.price}"/>
+                        <input type="hidden" th:field="*{playersResult[__${playersResultIndex.index}__].legalCards[__${lcIndex.index}__].card.fine}"/>
+                        <input type="hidden" th:field="*{playersResult[__${playersResultIndex.index}__].legalCards[__${lcIndex.index}__].card.image}"/>
+                        <input type="hidden" th:field="*{playersResult[__${playersResultIndex.index}__].legalCards[__${lcIndex.index}__].card.isContraband}"/>
+                        <input type="hidden" th:field="*{playersResult[__${playersResultIndex.index}__].legalCards[__${lcIndex.index}__].card.hasEffect}"/>
+
+                        <!-- End of Hidden fields -->
+                      </div>
                     </div>
                   </div>
+
+                  <!-- Contraband -->
+                  <div class="col-12 col-lg-6">
+                    <div class="row">
+                      <div class="col-12 col-lg-3" th:each="bcc, bccIndex : *{playersResult[__${playersResultIndex.index}__].baseContrabandCards}">
+                        <div class="card game-player-red mb-3">
+                          <img src="#" th:src="@{/resources/img} + ${bcc.card.image}" class="card-img-top" th:alt="${bcc.card.name}" alt="Card"/>
+                          <div class="card-footer">
+                            <input type="number" class="form-control form-control-sm" th:field="*{playersResult[__${playersResultIndex.index}__].baseContrabandCards[__${bccIndex.index}__].count}" min="0"/>
+                          </div>
+                        </div>
+
+                        <!-- Hidden fields -->
+
+                        <input type="hidden" th:field="*{playersResult[__${playersResultIndex.index}__].baseContrabandCards[__${bccIndex.index}__].card.name}"/>
+                        <input type="hidden" th:field="*{playersResult[__${playersResultIndex.index}__].baseContrabandCards[__${bccIndex.index}__].card.description}"/>
+                        <input type="hidden" th:field="*{playersResult[__${playersResultIndex.index}__].baseContrabandCards[__${bccIndex.index}__].card.price}"/>
+                        <input type="hidden" th:field="*{playersResult[__${playersResultIndex.index}__].baseContrabandCards[__${bccIndex.index}__].card.fine}"/>
+                        <input type="hidden" th:field="*{playersResult[__${playersResultIndex.index}__].baseContrabandCards[__${bccIndex.index}__].card.image}"/>
+                        <input type="hidden" th:field="*{playersResult[__${playersResultIndex.index}__].baseContrabandCards[__${bccIndex.index}__].card.isContraband}"/>
+                        <input type="hidden" th:field="*{playersResult[__${playersResultIndex.index}__].baseContrabandCards[__${bccIndex.index}__].card.hasEffect}"/>
+
+                        <!-- End of Hidden fields -->
+                      </div>
+                    </div>
+                  </div>
+
+                  <!--<div class="row">-->
+                  <!--                  <div class="col-12 col-lg-5 mb-3">
+                                      <div class="border border-danger">
+                                      <div class="row">
+                                        <div class="col-4">
+                                          <div class="h-100">
+                                            <div class="card text-bg-success mb-3">
+                                              <div>Apples</div>
+                                              <img src="#" th:src="@{/resources/img/cards/apples.JPG}" class="card-img-top" alt="Apples card"/>
+                                              <div class="card-footer">
+                                                <input type="number" class="form-control form-control-sm" min="0"/>
+                                              </div>
+                                            </div>
+                                            <div class="card text-bg-success">
+                                              <div>Bread</div>
+                                              <img src="#" th:src="@{/resources/img/cards/bread.JPG}" class="card-img-top" alt="Bread card"/>
+                                              <div class="card-footer">
+                                                <input type="number" class="form-control form-control-sm" min="0"/>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <div class="col-4">
+                                          <div class="card" th:classappend="${p.player.hero eq 'red'} ? 'text-bg-danger' : (${p.player.hero eq 'blue'} ? 'game-player-blue' : (${p.player.hero eq 'green'} ? 'game-player-green' : (${p.player.hero eq 'yellow'} ? 'game-player-yellow' : (${p.player.hero eq 'purple'} ? 'game-player-purple'))))">
+                                            <div class="card-header">
+                                              <div class="h5 mb-0" th:text="${p.player.name}">Name</div>
+                                            </div>
+                                            <div class="card-body">
+                                              <div class="d-flex justify-content-center">
+                                                <img th:if="${p.player.hero eq 'red'}" src="../resources/img/characters/innkeeper.png"
+                                                     th:src="@{/resources/img/characters/innkeeper.png}" alt="Character" width="auto" height="190"/>
+                                                <img th:if="${p.player.hero eq 'blue'}" src="../resources/img/characters/baker.pngs"
+                                                     th:src="@{/resources/img/characters/baker.png}" alt="Character" width="auto" height="190"/>
+                                                <img th:if="${p.player.hero eq 'green'}" src="../resources/img/characters/hunter.png"
+                                                     th:src="@{/resources/img/characters/hunter.png}" alt="Character" width="auto" height="190"/>
+                                                <img th:if="${p.player.hero eq 'yellow'}" src="../resources/img/characters/cheese_dealer.png"
+                                                     th:src="@{/resources/img/characters/cheese_dealer.png}" alt="Character" width="auto" height="190"/>
+                                                <img th:if="${p.player.hero eq 'purple'}" src="../resources/img/characters/madame.png"
+                                                     th:src="@{/resources/img/characters/madame.png}" alt="Character" width="auto" height="190"/>
+                                              </div>
+                                              <div class="d-flex justify-content-center">
+                                                                <div th:classappend="${p.player.hero eq 'red'} ? 'text-danger' : (${p.player.hero eq 'blue'} ? 'text-primary' : (${p.player.hero eq 'green'} ? 'text-success' : (${p.player.hero eq 'yellow'} ? 'text-warning' : (${p.player.hero eq 'purple'} ? 'text-danger-emphasis'))))"
+                                                                     th:text="#{players.type.name. + ${p.player.hero}} + ' (' + #{players.type. + ${p.player.hero}} + ')'">Hero</div>
+                                                <div th:text="#{players.type.name. + ${p.player.hero}} + ' (' + #{players.type. + ${p.player.hero}} + ')'">Hero</div>
+                                                <div class="h6 mt-3 mb-2" th:text="#{players.type.name. + ${p.player.hero}}">Hero</div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <div class="col-4">
+                                          <div class="h-100">
+                                            <div class="card text-bg-success mb-3">
+                                              <div>Cheese</div>
+                                              <img src="#" th:src="@{/resources/img/cards/cheese.JPG}" class="card-img-top" alt="Cheese card"/>
+                                              <div class="card-footer">
+                                                <input type="number" class="form-control form-control-sm" min="0"/>
+                                              </div>
+                                            </div>
+                                            <div class="card text-bg-success">
+                                              <div>Chicken</div>
+                                              <img src="#" th:src="@{/resources/img/cards/chicken.JPG}" class="card-img-top" alt="Chicken card"/>
+                                              <div class="card-footer">
+                                                <input type="number" class="form-control form-control-sm" min="0"/>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      </div>
+                                    </div>-->
                   <!--</div>-->
+                  <hr class="mt-2 mb-3"/>
+                  <div class="row">
+                    <div class="col-12 col-lg mb-3" th:each="gcc, gccIndex : *{playersResult[__${playersResultIndex.index}__].goldContrabandCards}">
+                      <!--                    <div class="card text-bg-danger h-100">
+                                            <div class="card-body">
+                                              <div th:text="${gcc.card.name}">Gold contraband card</div>
+                                            </div>
+                                            <div class="card-footer game-gold-yellow">
+                                              <input type="number" class="form-control form-control-sm" min="0"/>
+                                            </div>
+                                          </div>-->
+                      <!--                    <div th:text="*{playersResult[__${playersResultIndex.index}__].goldContrabandCards[__${gccStat.index}__]}"></div>-->
+                      <div class="card game-player-red h-100">
+                        <img src="#" th:src="@{/resources/img} + ${gcc.card.image}" class="card-img-top" th:alt="${gcc.card.name}" alt="Card"/>
+                        <div class="card-footer">
+                          <input type="number" class="form-control form-control-sm" th:field="*{playersResult[__${playersResultIndex.index}__].goldContrabandCards[__${gccIndex.index}__].count}" min="0"/>
+                        </div>
+                      </div>
+
+                      <!-- Hidden fields -->
+
+                      <input type="hidden" th:field="*{playersResult[__${playersResultIndex.index}__].goldContrabandCards[__${gccIndex.index}__].card.name}"/>
+                      <input type="hidden" th:field="*{playersResult[__${playersResultIndex.index}__].goldContrabandCards[__${gccIndex.index}__].card.description}"/>
+                      <input type="hidden" th:field="*{playersResult[__${playersResultIndex.index}__].goldContrabandCards[__${gccIndex.index}__].card.price}"/>
+                      <input type="hidden" th:field="*{playersResult[__${playersResultIndex.index}__].goldContrabandCards[__${gccIndex.index}__].card.fine}"/>
+                      <input type="hidden" th:field="*{playersResult[__${playersResultIndex.index}__].goldContrabandCards[__${gccIndex.index}__].card.image}"/>
+                      <input type="hidden" th:field="*{playersResult[__${playersResultIndex.index}__].goldContrabandCards[__${gccIndex.index}__].card.isContraband}"/>
+                      <input type="hidden" th:field="*{playersResult[__${playersResultIndex.index}__].goldContrabandCards[__${gccIndex.index}__].card.hasEffect}"/>
+
+                      <!-- End of Hidden fields -->
+                    </div>
+                  </div>
+                  <hr class="mt-2 mb-3"/>
+                  <div class="row">
+                    <div class="col-12 col-lg-2 mb-3" th:each="kcc, kccIndex : *{playersResult[__${playersResultIndex.index}__].kingContrabandCards}">
+                      <div class="card game-player-red h-100">
+                        <img src="#" th:src="@{/resources/img} + ${kcc.card.image}" class="card-img-top" th:alt="${kcc.card.name}" alt="Card"/>
+                        <div class="card-footer d-flex align-items-center mb-0">
+                          <input type="number" class="form-control form-control-sm" th:field="*{playersResult[__${playersResultIndex.index}__].kingContrabandCards[__${kccIndex.index}__].count}" min="0"/>
+                          <div class="ms-3 mb-0 h-100 d-flex align-items-center cursor-default" th:if="${kcc.card.description ne null}"
+                               data-bs-toggle="tooltip" th:data-bs-title="${kcc.card.description}">
+                            <!--<div>Descr</div>-->
+                            <i class="fa-solid fa-circle-info"></i>
+                            <!--<i class="fa-solid fa-info"></i>-->
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Hidden fields -->
+
+                      <input type="hidden" th:field="*{playersResult[__${playersResultIndex.index}__].kingContrabandCards[__${kccIndex.index}__].card.name}"/>
+                      <input type="hidden" th:field="*{playersResult[__${playersResultIndex.index}__].kingContrabandCards[__${kccIndex.index}__].card.description}"/>
+                      <input type="hidden" th:field="*{playersResult[__${playersResultIndex.index}__].kingContrabandCards[__${kccIndex.index}__].card.price}"/>
+                      <input type="hidden" th:field="*{playersResult[__${playersResultIndex.index}__].kingContrabandCards[__${kccIndex.index}__].card.fine}"/>
+                      <input type="hidden" th:field="*{playersResult[__${playersResultIndex.index}__].kingContrabandCards[__${kccIndex.index}__].card.image}"/>
+                      <input type="hidden" th:field="*{playersResult[__${playersResultIndex.index}__].kingContrabandCards[__${kccIndex.index}__].card.isContraband}"/>
+                      <input type="hidden" th:field="*{playersResult[__${playersResultIndex.index}__].kingContrabandCards[__${kccIndex.index}__].card.hasEffect}"/>
+
+                      <!-- End of Hidden fields -->
+                      <!--                    <div class="card text-bg-danger h-100">
+                                            <div class="card-body">
+                                              <div th:text="${kcc.card.name}">King contraband card</div>
+                                              <div>
+                                                <small th:text="${kcc.card.description}"></small>
+                                              </div>
+                                            </div>
+                                            <div class="card-footer game-king-blue">
+                                              <input type="number" class="form-control form-control-sm" min="0"/>
+                                            </div>
+                                          </div>-->
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
+          <div class="tab-pane fade" id="result" tabindex="0">
+
+            <table class="table mb-4">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Hero</th>
+                  <th>Cash money</th>
+                  <th>Card money</th>
+                  <th>Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr th:each="p, playersResultIndex : *{playersResult}">
+                  <td th:text="${p.player.name}">Name</td>
+                  <td th:classappend="${p.player.hero eq 'red'} ? 'game-text-red' : (${p.player.hero eq 'blue'} ? 'game-text-blue' : (${p.player.hero eq 'green'} ? 'game-text-green' : (${p.player.hero eq 'yellow'} ? 'game-text-yellow' : (${p.player.hero eq 'purple'} ? 'game-text-purple'))))" th:text="#{players.type.name. + ${p.player.hero}} + ' (' + #{players.type. + ${p.player.hero}} + ')'">Hero</td>
+                  <td th:text="${p.currentMoney}">3</td>
+                  <td>5</td>
+                  <td>8</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="h3 mb-0">Winner: <span>Player</span> with <span>0</span> coins</div>
+          </div>
         </div>
-        <div class="tab-pane fade" id="result" tabindex="0">
-          <div>Result</div>
-        </div>
-      </div>
+      </form>
     </div>
   </body>
 </html>

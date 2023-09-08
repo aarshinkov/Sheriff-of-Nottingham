@@ -11,8 +11,59 @@
   background: rgba(0,0,0,0.1);
 }
 
-.text-bg-purple {
-  color: #A364C6 !important;
+.game-gold-yellow {
+  background-color: #FFD36F !important;
+}
+
+.game-king-blue {
+  background-color: #158C97 !important;
+  color: #fff !important;
+}
+
+.game-player-red {
+  background-color: #E10324 !important;
+  color: #fff !important;
+}
+
+.game-text-red {
+  color: #E10324 !important;
+}
+
+.game-player-blue {
+  background-color: #1270AD !important;
+  color: #fff !important;
+}
+
+.game-text-blue {
+  color: #1270AD !important;
+}
+
+.game-player-green {
+  background-color: #017560 !important;
+  color: #fff !important;
+}
+
+.game-text-green {
+  color: #017560 !important;
+}
+
+.game-player-yellow {
+  background-color: #F2E720 !important;
+}
+
+.game-text-yellow {
+  color: #D7CE2E !important;
+}
+
+.game-player-purple {
   background-color: #A364C6 !important;
   color: #fff !important;
+}
+
+.game-text-purple {
+  color: #A364C6 !important;
+}
+
+.cursor-default {
+  cursor: default;
 }

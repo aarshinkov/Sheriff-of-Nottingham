@@ -23,8 +23,8 @@
       </div>
 
       <div class="row">
-        <div class="col-12 col-lg-3 mb-3" th:if="${players ne null}" th:each="p : ${players}">
-          <!--          <div class="card h-100" th:classappend="${p.hero eq 'red'} ? 'text-bg-danger' : (${p.hero eq 'blue'} ? 'text-bg-primary' : (${p.hero eq 'green'} ? 'text-bg-success' : (${p.hero eq 'yellow'} ? 'text-bg-warning' : (${p.hero eq 'purple'} ? 'text-bg-purple'))))">
+        <div class="col-12 col-lg-2 mb-3" th:if="${players ne null}" th:each="p : ${players}">
+          <!--          <div class="card h-100" th:classappend="${p.hero eq 'red'} ? 'text-bg-danger' : (${p.hero eq 'blue'} ? 'text-bg-primary' : (${p.hero eq 'green'} ? 'text-bg-success' : (${p.hero eq 'yellow'} ? 'text-bg-warning' : (${p.hero eq 'purple'} ? 'game-player-purple'))))">
                       <div class="row g-0">
                         <div class="col-md-4 ps-3 d-flex justify-content-center align-items-center">
                           <img th:if="${p.hero eq 'red'}" class="img-fluid rounded-start" src="../resources/img/characters/innkeeper.png"
@@ -45,7 +45,7 @@
                         </div>
                       </div>
                     </div>-->
-          <div class="card h-100" th:classappend="${p.hero eq 'red'} ? 'text-bg-danger' : (${p.hero eq 'blue'} ? 'text-bg-primary' : (${p.hero eq 'green'} ? 'text-bg-success' : (${p.hero eq 'yellow'} ? 'text-bg-warning' : (${p.hero eq 'purple'} ? 'text-bg-purple'))))">
+          <div class="card h-100" th:classappend="${p.hero eq 'red'} ? 'game-player-red' : (${p.hero eq 'blue'} ? 'game-player-blue' : (${p.hero eq 'green'} ? 'game-player-green' : (${p.hero eq 'yellow'} ? 'game-player-yellow' : (${p.hero eq 'purple'} ? 'game-player-purple'))))">
             <div class="card-header">
               <div class="h5 mb-0" th:text="${p.name}">Name</div>
             </div>
@@ -71,10 +71,10 @@
             </div>
           </div>
         </div>
-        <div class="col-12 col-lg-3 mb-3" th:if="${!#lists.isEmpty(freeHeroes) and playersCount lt maxPlayers}">
+        <div class="col-12 col-lg-2 mb-3" th:if="${!#lists.isEmpty(freeHeroes) and playersCount lt maxPlayers}">
           <div class="card h-100 card-hover pointer" data-bs-toggle="modal" data-bs-target="#addPlayerModal">
             <div class="card-body d-flex align-items-center justify-content-center">
-              <div class="h4 mb-0">Add a player+</div>
+              <div class="h5 mb-0" th:text="#{players.addplayer} + ' +'">Add a player</div>
             </div>
           </div>
         </div>

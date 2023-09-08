@@ -19,6 +19,7 @@ public class Card implements Serializable {
   private String description;
   private Integer price;
   private Integer fine;
+  private String image;
   private Boolean isContraband = true;
   private Boolean hasEffect = false;
 }
