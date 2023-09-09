@@ -13,7 +13,7 @@
 
         <div class="row">
           <div class="col-12 mb-3">
-            <button type="submit" class="btn btn-primary">Calculate</button>
+            <button type="submit" class="btn btn-primary" th:text="#{btn.calculate}">Calculate</button>
           </div>
         </div>
 
@@ -24,7 +24,7 @@
           </li>
           <li class="nav-item">
             <button type="button" class="nav-link" role="tab" id="result-tab" data-bs-toggle="tab"
-                    data-bs-target="#result" aria-controls="result" aria-selected="false">Result</button>
+                    data-bs-target="#result" aria-controls="result" aria-selected="false" th:text="#{game.result.header}">Result</button>
           </li>
         </ul>
         <!--<div th:text="*{playersResult}"></div>-->
@@ -161,39 +161,56 @@
             <table class="table mb-4">
               <thead>
                 <tr>
-                  <th>Name</th>
-                  <th>Hero</th>
-                  <th>Cash money</th>
-                  <th>Card money</th>
-                  <th>Total</th>
+                  <th th:text="#{game.result.table.name}">Name</th>
+                  <th th:text="#{game.result.table.hero}">Hero</th>
+                  <th th:text="#{game.result.table.cashmoney}">Cash money</th>
+                  <th th:text="#{game.result.table.cardmoney}">Card money</th>
+                  <th th:text="#{game.result.table.kingsandqueensmoney}">Kings &amp; Queens money</th>
+                  <th th:text="#{game.result.table.total}">Total</th>
                 </tr>
               </thead>
               <tbody>
-<!--                <tr th:each="p, playersResultIndex : *{playersResult}">
-                  <td th:text="${p.player.name}">Name</td>
-                  <td th:classappend="${p.player.hero eq 'red'} ? 'game-text-red' : (${p.player.hero eq 'blue'} ? 'game-text-blue' : (${p.player.hero eq 'green'} ? 'game-text-green' : (${p.player.hero eq 'yellow'} ? 'game-text-yellow' : (${p.player.hero eq 'purple'} ? 'game-text-purple'))))" th:text="#{players.type.name. + ${p.player.hero}} + ' (' + #{players.type. + ${p.player.hero}} + ')'">Hero</td>
-                  <td th:text="${p.currentMoney}">3</td>
-                  <td>5</td>
-                  <td>8</td>
-                </tr>-->
-<!--<div th:text="${playersTotal}"></div>-->
-                <tr th:each="pt : ${totalResult.playersTotal}">
-                  <td th:text="${pt.player.name}">Player name</td>
-                  <td th:classappend="${pt.player.hero eq 'red'} ? 'game-text-red' : (${pt.player.hero eq 'blue'} ? 'game-text-blue' : (${pt.player.hero eq 'green'} ? 'game-text-green' : (${pt.player.hero eq 'yellow'} ? 'game-text-yellow' : (${pt.player.hero eq 'purple'} ? 'game-text-purple'))))" th:text="#{players.type.name. + ${pt.player.hero}} + ' (' + #{players.type. + ${pt.player.hero}} + ')'">Hero</td>
-                  <td th:text="${pt.cashMoney}">Cash money</td>
-                  <td th:text="${pt.cardMoney}">Card money</td>
-                  <!--<td>4</td>-->
-                  <td th:text="${pt.total}">Total</td>
-<!--                  <td th:text="${p.player.name}">Name</td>
-                  <td th:classappend="${p.player.hero eq 'red'} ? 'game-text-red' : (${p.player.hero eq 'blue'} ? 'game-text-blue' : (${p.player.hero eq 'green'} ? 'game-text-green' : (${p.player.hero eq 'yellow'} ? 'game-text-yellow' : (${p.player.hero eq 'purple'} ? 'game-text-purple'))))" th:text="#{players.type.name. + ${p.player.hero}} + ' (' + #{players.type. + ${p.player.hero}} + ')'">Hero</td>
-                  <td th:text="${p.currentMoney}">3</td>
-                  <td>5</td>
-                  <td>8</td>-->
-                </tr>
+                <div th:remove="tag" th:unless="${totalResult ne null and totalResult.playersTotal ne null and totalResult.winners ne null}">
+                  <tr th:each="p, playersResultIndex : *{playersResult}">
+                    <td th:text="${p.player.name}">Name</td>
+                    <td th:classappend="${p.player.hero eq 'red'} ? 'game-text-red' : (${p.player.hero eq 'blue'} ? 'game-text-blue' : (${p.player.hero eq 'green'} ? 'game-text-green' : (${p.player.hero eq 'yellow'} ? 'game-text-yellow' : (${p.player.hero eq 'purple'} ? 'game-text-purple'))))" th:text="#{players.type.name. + ${p.player.hero}} + ' (' + #{players.type. + ${p.player.hero}} + ')'">Hero</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                  </tr>
+                </div>
+                <div th:remove="tag" th:if="${totalResult ne null and totalResult.playersTotal ne null and totalResult.winners ne null}">
+                  <tr th:each="pt : ${totalResult.playersTotal}" th:classappend="${pt.isWinner} ? 'table-active fw-bold'">
+                    <td th:text="${pt.player.name}">Player name</td>
+                    <td th:classappend="${pt.player.hero eq 'red'} ? 'game-text-red' : (${pt.player.hero eq 'blue'} ? 'game-text-blue' : (${pt.player.hero eq 'green'} ? 'game-text-green' : (${pt.player.hero eq 'yellow'} ? 'game-text-yellow' : (${pt.player.hero eq 'purple'} ? 'game-text-purple'))))" th:text="#{players.type.name. + ${pt.player.hero}} + ' (' + #{players.type. + ${pt.player.hero}} + ')'">Hero</td>
+                    <td th:text="${pt.cashMoney}">Cash money</td>
+                    <td th:text="${pt.cardMoney}">Card money</td>
+                    <td th:text="${pt.kingAndQueenMoney}">Kings &amp; Queens money</td>
+                    <!--<td>4</td>-->
+                    <td th:text="${pt.total}">Total</td>
+                    <!--                  <td th:text="${p.player.name}">Name</td>
+                                      <td th:classappend="${p.player.hero eq 'red'} ? 'game-text-red' : (${p.player.hero eq 'blue'} ? 'game-text-blue' : (${p.player.hero eq 'green'} ? 'game-text-green' : (${p.player.hero eq 'yellow'} ? 'game-text-yellow' : (${p.player.hero eq 'purple'} ? 'game-text-purple'))))" th:text="#{players.type.name. + ${p.player.hero}} + ' (' + #{players.type. + ${p.player.hero}} + ')'">Hero</td>
+                                      <td th:text="${p.currentMoney}">3</td>
+                                      <td>5</td>
+                                      <td>8</td>-->
+                  </tr>
+                </div>
               </tbody>
             </table>
 
-            <div class="h3 mb-0" th:each="winner : ${totalResult.winners}">Winner: <span>Player</span> with <span>0</span> coins</div>
+            <div th:remove="tag" th:if="${totalResult ne null and totalResult.playersTotal ne null and totalResult.winners ne null}">
+
+              <div th:if="${#lists.size(totalResult.winners) eq 1}">
+                <div class="h3 mb-3" th:text="#{game.result.winners.1}">There is only one winner</div>
+              </div>
+              <div th:if="${#lists.size(totalResult.winners) gt 1}">
+                <div class="h3 mb-3" th:text="#{game.result.winners.n(${#lists.size(totalResult.winners)})}">There are N winners</div>
+                <!--<div class="h3 mb-0" th:each="winner : ${totalResult.winners}" th:text="#{game.result.winners.winner.money.1}${winner.player.name} + ' - ' + #{players.type.name. + ${winner.player.hero}} + ' (' + #{players.type. + ${winner.player.hero}} + ')'">Winner</div>-->
+              </div>
+
+              <div class="h3 mb-0" th:each="winner : ${totalResult.winners}" th:with="color=${winner.player.hero eq 'red'} ? 'game-text-red' : (${winner.player.hero eq 'blue'} ? 'game-text-blue' : (${winner.player.hero eq 'green'} ? 'game-text-green' : (${winner.player.hero eq 'yellow'} ? 'game-text-yellow' : (${winner.player.hero eq 'purple'} ? 'game-text-purple'))))"
+                   th:utext="${winner.total eq 1} ? #{game.result.winners.winner.money.1(${winner.player.name}, ${color}, #{players.type.name. + ${winner.player.hero}}, #{players.type. + ${winner.player.hero}})} : #{game.result.winners.winner.money.n(${winner.player.name}, ${color}, #{players.type.name. + ${winner.player.hero}}, #{players.type. + ${winner.player.hero}}, ${winner.total})}">Winner</div>
+            </div>
           </div>
         </div>
       </form>

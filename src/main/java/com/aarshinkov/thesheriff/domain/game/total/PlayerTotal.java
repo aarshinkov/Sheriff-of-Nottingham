@@ -20,6 +20,7 @@ public class PlayerTotal implements Serializable {
   private Integer cashMoney;
   private Integer cardMoney;
   private Integer kingAndQueenMoney;
+  private Boolean isWinner = false;
 
   public void addKingAndQueenMoney(Integer money) {
 

@@ -34,6 +34,22 @@ public class CalculatorServiceImpl implements CalculatorService {
     totalResult.setPlayersTotal(playersTotal);
 
     List<PlayerTotal> winners = new ArrayList<>();
+
+    Integer winnerMoney = 0;
+
+    for (PlayerTotal playerTotal : playersTotal) {
+      if (playerTotal.getTotal() >= winnerMoney) {
+        winnerMoney = playerTotal.getTotal();
+      }
+    }
+
+    for (PlayerTotal playerTotal : playersTotal) {
+      if (playerTotal.getTotal().equals(winnerMoney)) {
+        winners.add(playerTotal);
+        playerTotal.setIsWinner(Boolean.TRUE);
+      }
+    }
+
     totalResult.setWinners(winners);
 
     return totalResult;

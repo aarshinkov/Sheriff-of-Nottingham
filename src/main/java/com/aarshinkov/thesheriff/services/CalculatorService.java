@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface CalculatorService {
 
-  TotalResult calculateTotalResult( List<PlayerResult> playersResult);
+  TotalResult calculateTotalResult(List<PlayerResult> playersResult);
   
   KingsAndQueens calculateCardsKingsAndQueens(LegalCardType legalCardType, List<CardContainer>... playersCards);
 }
