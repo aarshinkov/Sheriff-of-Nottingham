@@ -13,8 +13,10 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class King implements Serializable {
-  
-  private String t;
+public class KingQueen implements Serializable {
+
+  private LegalCardType legalCardType;
+  private Integer kingPrice;
+  private Integer queenPrice;
 
 }

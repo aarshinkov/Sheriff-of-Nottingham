@@ -17,4 +17,8 @@ public class CardContainer implements Serializable {
 
   private Integer count;
   private Card card;
+
+  public Integer getCount() {
+    return this.count == null ? 0 : this.count;
+  }
 }
